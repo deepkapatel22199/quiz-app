@@ -7,32 +7,55 @@ import './Quiz.css';
 
 const Quiz = () => {
     const [currentIndex, setCurrentIndex] = useState(0);
-    const [score, setScore] = useState(0);
     const [winnings, setWinnings] = useState(0);
+    const [message, setMessage] = useState(""); 
+    const [showMessage, setShowMessage] = useState(false);
     const navigate = useNavigate();
 
-    const handleAnswer = (selected) => {
-        const correct = questions[currentIndex].correctAnswer;
-        if (selected === correct) {
-            setScore(score + 1);
-            setWinnings(winnings + 100);
-        }
-        const next = currentIndex + 1;
-        if (next < questions.length) {
-          setCurrentIndex(next);
+    const handleAnswer = (selectedAnswer) => {
+        const currentQuestion = questions[currentIndex];
+      
+        if (selectedAnswer === currentQuestion.correctAnswer) {
+          const prize = 100;
+          const newWinnings = winnings + prize;
+          setWinnings(newWinnings);
+          setMessage(`🎉 Correct! You won $${prize}`);
+          setShowMessage(true);
+      
+          setTimeout(() => {
+            setShowMessage(false);
+            if (currentIndex + 1 < questions.length) {
+              setCurrentIndex(prev => prev + 1);
+            } else {
+              navigate("/result", { state: { winnings: newWinnings } });
+            }
+          }, 1000);
         } else {
-          navigate('/results', { state: { score, total: questions.length, winnings: winnings + (selected === correct ? 100 : 0) } });
+          setMessage("❌ Sorry, that's incorrect. Game Over!");
+          setShowMessage(true);
+      
+          setTimeout(() => {
+            navigate("/result", { state: { winnings: winnings } });
+          }, 1000);
         }
       };
+      
+    
   return (
-    <div className="quiz-container">
-        <h2>Question {currentIndex + 1} / {questions.length}</h2>
-        <h3>Current Winnings: ${winnings}</h3>
-        <QuestionCard
-            question={questions[currentIndex].question}
-            options={questions[currentIndex].options}
-            onAnswer={handleAnswer}
-        />
+    <div className='quiz-main-layout'>
+        <div className="quiz-section">
+            <h2>Question {currentIndex + 1} / {questions.length}</h2>
+            <h3>Current Winnings: ${winnings}</h3>
+            {showMessage ? (
+            <div className="feedback-message">{message}</div>
+            ) : (
+            <QuestionCard
+                question={questions[currentIndex].question}
+                options={questions[currentIndex].options}
+                onAnswer={handleAnswer}
+            />
+            )}
+        </div>
     </div>
   );
 }

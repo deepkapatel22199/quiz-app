@@ -1,20 +1,33 @@
-import React from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
-import './Results.css';
+import React from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+import './Results.css';  // Import a custom CSS file for styling
 
-const Results = () => {
-  const navigate = useNavigate();
+const Result = () => {
   const location = useLocation();
-  const { score, total, winnings } = location.state || { score: 0, total: 0, winnings: 0 };
+  const navigate = useNavigate();
+  const winnings = location.state?.winnings ?? 0;
+
 
   return (
-    <div className="results-container">
-      <h1>🎉 Congratulations!</h1>
-      <p>You answered {score} out of {total} correctly.</p>
-      <h2>You won: 💰 ${winnings}</h2>
-      <button onClick={() => navigate('/')}>Play Again</button>
+    <div className="result-page">
+      <div className="result-container">
+        <h1 className="result-title">🎉 Game Over!</h1>
+        <h2 className="result-subtitle">Your Final Winnings:</h2>
+        <h3 className="result-amount">${winnings}</h3>
+        <p className="result-message">
+          {winnings > 0
+            ? "Great job! You answered the questions correctly."
+            : "Oops! Looks like you didn't get the answers right. Better luck next time!"}
+        </p>
+        <button 
+          className="play-again-btn" 
+          onClick={() => navigate("/")}
+        >
+          Play Again
+        </button>
+      </div>
     </div>
   );
-}
+};
 
-export default Results;
+export default Result;

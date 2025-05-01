@@ -1,19 +1,18 @@
 import React from 'react';
-import './QuestionCard.css';
 
-function QuestionCard({ question, options, onAnswer }) {
-  return (
-    <div className="question-card">
-      <h2>{question}</h2>
-      <div className="options">
-        {options.map((opt, index) => (
-          <button key={index} onClick={() => onAnswer(opt)}>
-            {opt}
-          </button>
-        ))}
-      </div>
-    </div>
-  );
-}
+const QuestionCard = ({ question, options, onAnswer }) => {
+    return (
+        <div>
+            <h3>{question}</h3>
+            <div>
+                {options.map((option, index) => (
+                    <button key={index} onClick={() => onAnswer(option)}>
+                        {option}
+                    </button>
+                ))}
+            </div>
+        </div>
+    );
+};
 
 export default QuestionCard;
