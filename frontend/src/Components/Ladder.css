@@ -1,0 +1,19 @@
+.ladder {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.ladder-item {
+  padding: 8px 12px;
+  border-bottom: 1px solid #ccc;
+  display: flex;
+  justify-content: space-between;
+  background: #f9f9f9;
+  font-weight: normal;
+}
+
+.ladder-item.active {
+  background: gold;
+  font-weight: bold;
+}

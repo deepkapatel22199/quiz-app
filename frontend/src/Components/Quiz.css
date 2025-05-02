@@ -1,34 +1,79 @@
-.quiz-main-layout {
-    display: flex;
-    justify-content: space-between;
-    gap: 40px;
-    padding: 40px;
-}
-.quiz-section {
-    flex: 1;
-    display: flex;
-    flex-direction: column;     
-    gap: 20px;
-    padding: 20px;              
-    background-color: #f9f9f9;
-    border-radius: 10px;                
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    min-height: 500px;
+.quiz-container {
+  display: flex;
+  gap: 2rem;
+  padding: 2rem;
 }
 
-.feedback-message {
-    background-color: #222;
-    color: white;
-    font-size: 1.5rem;
-    padding: 20px;
-    text-align: center;
-    border-radius: 10px;
-    animation: fadeIn 0.3s ease-in-out;
+.quiz-left {
+  flex: 2;
+}
+
+.quiz-right {
+  flex: 1;
+}
+
+.quiz-loading {
+  font-size: 1.5rem;
+  text-align: center;
+  margin-top: 50px;
+}
+
+.quiz-message {
+  margin-bottom: 20px;
+  padding: 10px 20px;
+  border-radius: 12px;
+  background-color: #f0f8ff;
+  color: #222;
+  font-weight: bold;
+  font-size: 18px;
+  text-align: center;
+  animation: fadein 0.3s ease-in-out;
+}
+
+@keyframes fadein {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.feedback-modal {
+  position: fixed;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 2rem 3rem;
+  border-radius: 10px;
+  font-size: 1.5rem;
+  font-weight: bold;
+  background-color: white;
+  color: black;
+  z-index: 999;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  animation: fadeInOut 1.5s ease-in-out;
+  text-align: center;
+}
+
+.feedback-modal.correct {
+  border: 3px solid green;
+}
+
+.feedback-modal.wrong {
+  border: 3px solid red;
+}
+
+@keyframes fadeInOut {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -60%);
   }
-  
-  @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(-10px); }
-    to { opacity: 1; transform: translateY(0); }
+  25% {
+    opacity: 1;
+    transform: translate(-50%, -50%);
   }
-  
-  
+  75% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -40%);
+  }
+}
