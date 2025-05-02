@@ -12,6 +12,9 @@ const Quiz = () => {
   const [locked, setLocked] = useState(false);
   const [feedback, setFeedback] = useState(null);
 
+  // Lifeline states
+  const [lifelineUsed, setLifelineUsed] = useState({ fiftyFifty: false, skip: false });
+
   const navigate = useNavigate();
 
   const prizeMoney = [
@@ -87,6 +90,39 @@ const Quiz = () => {
     window.speechSynthesis.speak(speech);
   };
 
+  const useFiftyFifty = () => {
+    if (lifelineUsed.fiftyFifty) return;
+
+    const currentQuestion = questions[currentQIndex];
+    const incorrectOptions = currentQuestion.options.filter(
+      (opt) => opt !== currentQuestion.correctAnswer
+    );
+
+    const optionsToRemove = shuffle(incorrectOptions).slice(0, 2);
+    const updatedOptions = currentQuestion.options.filter(
+      (opt) => !optionsToRemove.includes(opt)
+    );
+
+    const updatedQuestions = [...questions];
+    updatedQuestions[currentQIndex] = {
+      ...currentQuestion,
+      options: updatedOptions,
+    };
+
+    setQuestions(updatedQuestions);
+    setLifelineUsed((prev) => ({ ...prev, fiftyFifty: true }));
+  };
+
+  const skipQuestion = () => {
+    if (lifelineUsed.skip) return;
+    setLocked(true);
+    setTimeout(() => {
+      setCurrentQIndex((prev) => prev + 1);
+      setLifelineUsed((prev) => ({ ...prev, skip: true }));
+      setLocked(false);
+    }, 1000);
+  };
+
   if (loading) return <div className="quiz-loading">Loading...</div>;
 
   return (
@@ -109,6 +145,24 @@ const Quiz = () => {
             : "❌ Sorry, wrong answer!"}
         </div>
       )}
+
+      {/* Lifeline buttons */}
+      <div className="lifeline-buttons">
+        <button
+          className="lifeline-btn"
+          onClick={useFiftyFifty}
+          disabled={lifelineUsed.fiftyFifty}
+        >
+          50:50
+        </button>
+        <button
+          className="lifeline-btn"
+          onClick={skipQuestion}
+          disabled={lifelineUsed.skip}
+        >
+          Skip Question
+        </button>
+      </div>
     </div>
   );
 };

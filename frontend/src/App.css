@@ -1,5 +1,77 @@
-*{
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+/* Global body styles for dark and light modes */
+body.light-mode {
+  background-color: #f9f9f9;
+  color: #333;
 }
+
+body.dark-mode {
+  background-color: #181818;
+  color: #f9f9f9;
+}
+
+/* Button styles for toggling light/dark mode */
+body.light-mode .theme-toggle-btn {
+  background-color: #007bff;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  cursor: pointer;
+  border-radius: 8px;
+}
+
+body.dark-mode .theme-toggle-btn {
+  background-color: #28a745;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  cursor: pointer;
+  border-radius: 8px;
+}
+
+/* Hover effect for the button */
+body.light-mode .theme-toggle-btn:hover {
+  background-color: #0056b3;
+}
+
+body.dark-mode .theme-toggle-btn:hover {
+  background-color: #218838;
+}
+
+/* Additional global styles */
+body {
+  margin: 0;
+  font-family: 'Poppins', sans-serif;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.App {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+
+.quiz-container,
+.result-container,
+.home-container {
+  max-width: 800px;
+  width: 100%;
+  padding: 20px;
+  border-radius: 10px;
+  background-color: inherit; /* Inherit background for seamless theme */
+}
+
+.quiz-container {
+  background-color: inherit;
+}
+
+.result-container {
+  background-color: inherit;
+}
+
+.home-container {
+  background-color: inherit;
+}
+
+/* You can add more theme-specific styles for specific components here */
