@@ -10,7 +10,7 @@ const Quiz = () => {
   const [loading, setLoading] = useState(true);
   const [winnings, setWinnings] = useState(0);
   const [locked, setLocked] = useState(false);
-  const [feedback, setFeedback] = useState(null); // New state for feedback
+  const [feedback, setFeedback] = useState(null);
 
   const navigate = useNavigate();
 
@@ -58,6 +58,8 @@ const Quiz = () => {
         setFeedback("correct");
         const newWinnings = prizeMoney[currentQIndex + 1];
         setWinnings(newWinnings);
+        speakMessage("Congratulations! You won this round!");
+
         setTimeout(() => {
           setFeedback(null);
           if (currentQIndex + 1 < questions.length) {
@@ -69,12 +71,20 @@ const Quiz = () => {
         }, 1500);
       } else {
         setFeedback("wrong");
+        speakMessage("Sorry, wrong answer!");
+
         setTimeout(() => {
           setFeedback(null);
           navigate("/result", { state: { winnings } });
         }, 1500);
       }
     }, 1000);
+  };
+
+  const speakMessage = (message) => {
+    const speech = new SpeechSynthesisUtterance(message);
+    speech.lang = "en-US";
+    window.speechSynthesis.speak(speech);
   };
 
   if (loading) return <div className="quiz-loading">Loading...</div>;
