@@ -11,14 +11,12 @@ const Quiz = () => {
   const [winnings, setWinnings] = useState(0);
   const [locked, setLocked] = useState(false);
   const [feedback, setFeedback] = useState(null);
-
-  // Lifeline states
   const [lifelineUsed, setLifelineUsed] = useState({ fiftyFifty: false, skip: false });
 
   const navigate = useNavigate();
 
   const prizeMoney = [
-    0, 100, 200, 300, 500, 1000, 2000, 4000, 8000, 16000, 32000,
+    100, 200, 300, 500, 1000, 2000, 4000, 8000, 16000, 32000, 64000, 125000,
   ];
 
   useEffect(() => {
@@ -44,12 +42,30 @@ const Quiz = () => {
     fetchQuestions();
   }, []);
 
+  useEffect(() => {
+    if (questions.length > 0 && !locked) {
+      speakQuestion(questions[currentQIndex]);
+    }
+  }, [currentQIndex, questions]);
+
   const decodeHTML = (text) => {
     const parser = new DOMParser();
     return parser.parseFromString(text, "text/html").body.textContent;
   };
 
   const shuffle = (arr) => [...arr].sort(() => Math.random() - 0.5);
+
+  const speakMessage = (message) => {
+    const utterance = new SpeechSynthesisUtterance(message);
+    utterance.lang = "en-US";
+    window.speechSynthesis.cancel();
+    window.speechSynthesis.speak(utterance);
+  };
+
+  const speakQuestion = (q) => {
+    const message = `Question: ${q.question}. The options are: ${q.options.join(", ")}. Please select your answer.`;
+    speakMessage(message);
+  };
 
   const handleAnswer = (selected) => {
     if (locked) return;
@@ -82,12 +98,6 @@ const Quiz = () => {
         }, 1500);
       }
     }, 1000);
-  };
-
-  const speakMessage = (message) => {
-    const speech = new SpeechSynthesisUtterance(message);
-    speech.lang = "en-US";
-    window.speechSynthesis.speak(speech);
   };
 
   const useFiftyFifty = () => {
@@ -127,17 +137,18 @@ const Quiz = () => {
 
   return (
     <div className="quiz-container">
-      <div className="quiz-left">
-        <QuestionCard
-          question={questions[currentQIndex]}
-          onAnswer={handleAnswer}
-          locked={locked}
-        />
+      <div className="quiz-topper">
+        <div className="quiz-left">
+          <QuestionCard
+            question={questions[currentQIndex]}
+            onAnswer={handleAnswer}
+            locked={locked}
+          />
+        </div>
+        <div className="quiz-right">
+          <Ladder current={currentQIndex + 1} prizeMoney={prizeMoney} />
+        </div>
       </div>
-      <div className="quiz-right">
-        <Ladder current={currentQIndex + 1} prizeMoney={prizeMoney} />
-      </div>
-
       {feedback && (
         <div className={`feedback-modal ${feedback}`}>
           {feedback === "correct"
@@ -146,7 +157,6 @@ const Quiz = () => {
         </div>
       )}
 
-      {/* Lifeline buttons */}
       <div className="lifeline-buttons">
         <button
           className="lifeline-btn"

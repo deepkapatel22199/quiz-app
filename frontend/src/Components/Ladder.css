@@ -1,19 +1,40 @@
+/* Ladder.css */
+
 .ladder {
   list-style: none;
   padding: 0;
-  margin: 0;
+  margin: 0 auto;
+  max-width: 250px;
+  background-color: #1a1a2e;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 0 12px rgba(0, 0, 0, 0.4);
+  font-family: 'Segoe UI', sans-serif;
 }
 
 .ladder-item {
-  padding: 8px 12px;
-  border-bottom: 1px solid #ccc;
   display: flex;
   justify-content: space-between;
-  background: #f9f9f9;
-  font-weight: normal;
+  align-items: center;
+  padding: 12px 18px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  font-size: 1rem;
+  color: #ccc;
+  background-color: #1a1a2e;
+  transition: background 0.3s, color 0.3s;
+}
+
+.ladder-item span {
+  font-weight: 500;
+  color: #aaa;
 }
 
 .ladder-item.active {
-  background: gold;
+  background-color: #ffd700;
+  color: #000;
   font-weight: bold;
+}
+
+.ladder-item.active span {
+  color: #000;
 }
